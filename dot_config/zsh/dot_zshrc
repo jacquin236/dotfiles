@@ -57,7 +57,7 @@ plugins=(
   docker
   kube-ps1
   kubectl
-  nvm
+  #nvm
   #minikube
   pip
   poetry-env
@@ -70,10 +70,6 @@ plugins=(
   zsh-autocomplete
   zsh-autosuggestions
 )
-
-zstyle ':omz:plugins:nvm' lazy yes
-zstyle ':omz:plugins:nvm' autoload yes
-zstyle ':omz:plugins:nvm' silent-autoload yes
 
 source $ZSH/oh-my-zsh.sh
 

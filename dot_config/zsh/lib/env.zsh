@@ -92,6 +92,12 @@ export NODE_REPL_HISTORY="$XDG_DATA_HOME/nodejs/node_repl_history"
 export PNPM_HOME="$XDG_DATA_HOME/pnpm"
 export npm_config_cache="$XDG_CACHE_HOME/npm"
 
+if [ -d $NVM_DIR ]; then
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" --no-use # This loads nvm
+  alias node='unalias node ; unalias npm ; nvm use default ; node $@'
+  alias npm='unalias node ; unalias npm ; nvm use default ; npm $@'
+fi
+
 # whalebrew
 export WHALEBREW_CONFIG_DIR="$XDG_CONFIG_HOME/whalebrew"
 export WHALEBREW_INSTALL_PATH="$XDG_BIN_HOME/whalebrew"
