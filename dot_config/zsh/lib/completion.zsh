@@ -105,5 +105,5 @@ zstyle ':completion:*:jobs' verbose true
 zstyle ':completion:*:jobs' numbers true
 
 ### Zsh-autocomplete settings
-zstyle ':autocomplete:*' delay 0.1  # seconds (float)
+zstyle ':autocomplete:*' delay 0.001  # seconds (float)
 zstyle ':autocomplete:*' min-input 3
