@@ -1,0 +1,84 @@
+# Fish-like dirs
+: ${__zsh_config_dir:=${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}}
+: ${__zsh_user_data_dir:=${XDG_DATA_HOME:-$HOME/.local/share}/zsh}
+: ${__zsh_cache_dir:=${XDG_CACHE_HOME:-$HOME/.cache}/zsh}
+
+() {
+  for zdir in $@; do
+    [ -d "${(P)zdir}" ] || mkdir -p -- "${(P)zdir}"
+  done
+} __zsh_{config,user_data,cache}_dir
+
+# Homebrew
+if [ -d /home/linuxbrew/.linuxbrew/bin ]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
+# LS_COLORS
+if [ ! -f "$XDG_DATA_HOME/lscolors.sh" ]; then
+  mkdir /tmp/LS_COLORS && \
+    curl -L https://api.github.com/repos/trapd00r/LS_COLORS/tarball/master | \
+    tar xzf - --directory=/tmp/LS_COLORS --strip=1 
+  cd /tmp/LS_COLORS && make install 
+  cd $HOME
+fi
+source "$XDG_DATA_HOME/lscolors.sh"
+
+# Omz
+export ZSH="$__zsh_user_data_dir/ohmyzsh"
+export ZSH_CACHE_DIR="$__zsh_cache_dir"
+export ZSH_COMPDUMP="$ZSH_CACHE_DIR/compdump/zcompdump-${SHORT_HOST}-${ZSH_VERSION}"
+export ZSH_EVALCACHE_DIR=${ZSH_EVALCACHE_DIR:-"$__zsh_cache_dir/evalcache"}
+
+if [[ ! -f $ZSH/oh-my-zsh.sh ]]; then
+  print -P "%F{33} %F{220}Installing %F{33}OH-MY-ZSH%F{220} Initiative Plugin Manager (%F{33}ohmyzsh/ohmyzsh%F{220})…%f"
+  command git clone https://github.com/ohmyzsh/ohmyzsh.git "$__zsh_user_data_dir/ohmyzsh" && \
+    print -P "%F{33} %F{34}Installation successful.%f%b" || \
+    print -P "%F{160} The clone has failed.%f%b"
+fi
+
+ZSH_CUSTOM="$ZDOTDIR/custom"
+# ZSH_THEME="random"
+HIST_STAMPS="dd.mm.yyyy"
+DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+ for f in $ZDOTDIR/lib/*.zsh; do
+   source $f 
+ done
+ unset f
+
+plugins=(
+  fast-syntax-highlighting
+  colored-man-pages
+  evalcache
+  git
+  git-prompt
+  forgit
+  docker
+  kube-ps1
+  kubectl
+  nvm
+  #minikube
+  pip
+  poetry-env
+  poetry
+  #rbenv
+  rust
+  sudo
+  systemd
+  urltools
+  zsh-autocomplete
+  zsh-autosuggestions
+)
+
+zstyle ':omz:plugins:nvm' lazy yes
+zstyle ':omz:plugins:nvm' autoload yes
+zstyle ':omz:plugins:nvm' silent-autoload yes
+
+source $ZSH/oh-my-zsh.sh
+
+## eval cache some plugins
+_evalcache starship init zsh
+_evalcache rbenv init - --no-rehash zsh
+_evalcache pyenv init - --no-rehash zsh
+_evalcache pyenv virtualenv-init - zsh 
