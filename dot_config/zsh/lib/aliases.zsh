@@ -5,6 +5,20 @@ function reload() {
   [[ "$zsh" = -* || -o login ]] && exec -l "${zsh#-}" || exec "$zsh"
 }
 
+function node() {
+  unalias node
+  unalias npm
+  nvm use default
+  node $@
+}
+
+function npm() {
+  unalias node
+  unalias npm
+  nvm use default
+  npm $@
+}
+
 # Only load these funcs if we have fzf installed
 if command -v fzf >/dev/null; then
   # Toggling between data sources with CTRL-D adn CTRL-F (fzf)

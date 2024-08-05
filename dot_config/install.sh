@@ -133,8 +133,12 @@ setup_omz() {
         fmtwarn "Cloning 'zsh-autocomplete'..."
         git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git \
           "$ZSH_CUSTOM/plugins/zsh-autocomplete"
+        fmtwarn "Cloning 'forgit'..."
         git clone https://github.com/wfxr/forgit.git \
           "$ZSH_CUSTOM/plugins/forgit"
+        fmtwarn "Cloning 'evalcache'..."
+        git clone https://github.com/mroth/evalcache \
+          "$ZSH_CUSTOM/plugins/evalcache"
         fmtsuccess "Done installing OMZ plugins. Please add them in your config file."
       fi
     fi
