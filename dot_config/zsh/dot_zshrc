@@ -1,80 +1,119 @@
-# Fish-like dirs
+### Zsh dirs ###
 : ${__zsh_config_dir:=${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}}
 : ${__zsh_user_data_dir:=${XDG_DATA_HOME:-$HOME/.local/share}/zsh}
 : ${__zsh_cache_dir:=${XDG_CACHE_HOME:-$HOME/.cache}/zsh}
 
+# Ensure these dirs exist
 () {
-  for zdir in $@; do
+  for zdir in $@
+  do
     [ -d "${(P)zdir}" ] || mkdir -p -- "${(P)zdir}"
   done
 } __zsh_{config,user_data,cache}_dir
 
-# Homebrew
+### Homebrew ###
 if [ -d /home/linuxbrew/.linuxbrew/bin ]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
 
-# LS_COLORS
-if [ ! -f "$XDG_DATA_HOME/lscolors.sh" ]; then
-  mkdir /tmp/LS_COLORS && \
-    curl -L https://api.github.com/repos/trapd00r/LS_COLORS/tarball/master | \
-    tar xzf - --directory=/tmp/LS_COLORS --strip=1 
-  cd /tmp/LS_COLORS && make install 
-  cd $HOME
-fi
-source "$XDG_DATA_HOME/lscolors.sh"
-
-# Omz
-export ZSH="$__zsh_user_data_dir/ohmyzsh"
-export ZSH_CACHE_DIR="$__zsh_cache_dir"
-export ZSH_COMPDUMP="$ZSH_CACHE_DIR/compdump/zcompdump-${SHORT_HOST}-${ZSH_VERSION}"
-export ZSH_EVALCACHE_DIR=${ZSH_EVALCACHE_DIR:-"$__zsh_cache_dir/evalcache"}
-
-if [[ ! -f $ZSH/oh-my-zsh.sh ]]; then
-  print -P "%F{33} %F{220}Installing %F{33}OH-MY-ZSH%F{220} Initiative Plugin Manager (%F{33}ohmyzsh/ohmyzsh%F{220})…%f"
-  command git clone https://github.com/ohmyzsh/ohmyzsh.git "$__zsh_user_data_dir/ohmyzsh" && \
-    print -P "%F{33} %F{34}Installation successful.%f%b" || \
-    print -P "%F{160} The clone has failed.%f%b"
-fi
-
-ZSH_CUSTOM="$ZDOTDIR/custom"
-# ZSH_THEME="random"
-HIST_STAMPS="dd.mm.yyyy"
-DISABLE_UNTRACKED_FILES_DIRTY="true"
-
- for f in $ZDOTDIR/lib/*.zsh; do
-   source $f 
- done
- unset f
-
-plugins=(
-  fast-syntax-highlighting
-  colored-man-pages
-  evalcache
-  git
-  git-prompt
-  forgit
-  docker
-  kube-ps1
-  kubectl
-  #nvm
-  #minikube
-  pip
-  poetry-env
-  poetry
-  #rbenv
-  rust
-  sudo
-  systemd
-  urltools
-  zsh-autocomplete
-  zsh-autosuggestions
+### ZINIT ##
+typeset -A ZINIT=(
+  BIN_DIR         $XDG_DATA_HOME/zinit/bin
+  HOME_DIR        $XDG_DATA_HOME/zinit
+  PLUGINS_DIR     $XDG_DATA_HOME/zinit/plugins
+  SNIPPETS_DIR    $XDG_DATA_HOME/zinit/snippets
+  COMPLETIONS_DIR $XDG_CACHE_HOME/zsh/completions
+  # COMPINIT_OPTS   -C
 )
 
-source $ZSH/oh-my-zsh.sh
+export ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/bin"
+export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
+export ZSH_COMPDUMP="${__zsh_cache_dir}/compdump/zcompdump-$SHORTHOST-$VERSION"
 
-## eval cache some plugins
+if [[ ! -f $ZINIT_HOME/zinit.zsh ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p "$XDG_DATA_HOME/zinit" && command chmod g-rwX "$XDG_DATA_HOME/zinit"
+    command git clone https://github.com/zdharma-continuum/zinit "$XDG_DATA_HOME/zinit/bin" && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+fi
+
+source "$ZINIT_HOME/zinit.zsh"
+
+#autoload -Uz _zinit
+#(( ${+_comps} )) && _comps[zinit]=_zinit
+
+### Zplugins ###
+## Annexes (important annexes without Turbo)
+zinit light-mode for \
+  zdharma-continuum/zinit-annex-as-monitor \
+  zdharma-continuum/zinit-annex-bin-gem-node \
+  zdharma-continuum/zinit-annex-patch-dl \
+  zdharma-continuum/zinit-annex-rust
+
+## Themes
+setopt promptsubst
+
+zinit wait lucid for \
+    OMZL::git.zsh \
+    OMZL::prompt_info_functions.zsh \
+    OMZP::git-prompt \
+    OMZP::kube-ps1 \
+  atload"unalias grv" \
+    OMZP::git 
+
+## Plugins
+# Oh-my-zsh library,plugins,completions
+zinit wait lucid light-mode for \
+    OMZL::functions.zsh \
+    OMZL::clipboard.zsh \
+    OMZL::git.zsh \
+    OMZL::grep.zsh \
+    OMZL::spectrum.zsh \
+    OMZL::termsupport.zsh \
+    OMZL::key-bindings.zsh \
+    OMZP::sudo \
+    OMZP::systemd \
+    OMZP::urltools \
+    OMZP::kubectl \
+    wfxr/forgit \
+  atinit"zicompinit; zicdreplay" \
+    zdharma-continuum/fast-syntax-highlighting \
+    OMZP::colored-man-pages \
+  atload"_zsh_autosuggest_start" \
+    zsh-users/zsh-autosuggestions
+
+### My lib
+for lib_file ($ZDOTDIR/lib/*.zsh); do
+  source $lib_file
+done
+unset lib_file
+
+# evalcache for faster load 'eval'
+export ZSH_EVALCACHE_DIR=${__zsh_cache_dir}/evalcache
+zinit light mroth/evalcache
+
 _evalcache starship init zsh
-_evalcache rbenv init - --no-rehash zsh
 _evalcache pyenv init - --no-rehash zsh
-_evalcache pyenv virtualenv-init - zsh 
+_evalcache pyenv virtualenv-init -
+_evalcache rbenv init - --no-rehash zsh
+
+# nvm
+export NVM_DIR=$XDG_DATA_HOME/nvm
+export NVM_LAZY_LOAD=true
+export NVM_NO_USE=true
+zinit light lukechilds/zsh-nvm
+
+# zsh-autocomplete
+zinit ice depth="1"
+zinit light marlonrichert/zsh-autocomplete
+
+zstyle ':autocomplete:*' delay 0.001  # seconds (float)
+zstyle ':autocomplete:*' min-input 3
+zstyle ':autocomplete:*' ignored-input '..##'
+
+autoload -Uz compinit
+compinit
+zinit cdreplay -q
+
+

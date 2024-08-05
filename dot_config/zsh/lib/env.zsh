@@ -143,10 +143,6 @@ if [ -d "$PYENV_ROOT/versions/3.12.0/bin" ]; then add_to_path "$PYENV_ROOT/versi
 if [ -d "$POETRY_HOME/bin" ]; then add_to_path "$POETRY_HOME/bin"; fi
 
 # pnpm, nvm
-if [ -d "$NVM_DIR" ] && [ -r "$NVM_DIR"/bash_completion ]; then
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-fi 
 if [ -d "$PNPM_HOME/bin" ]; then add_to_path "$PNPM_HOME/bin"; fi
 if command -v npm >/dev/null; then add_to_path "$(npm config get prefix)/bin"; fi
 
