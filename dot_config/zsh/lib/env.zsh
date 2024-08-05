@@ -1,3 +1,4 @@
+### DO NOT POLLUTE YOUR HOME :)
 # xdg
 export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
@@ -81,6 +82,7 @@ fi
 export PYENV_ROOT="$XDG_DATA_HOME/pyenv" || export PYENV_ROOT="$(brew --prefix pyenv)"
 export POETRY_HOME="$XDG_DATA_HOME/pypoetry"
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc.py"
+export CONDARC="$XDG_CONFIG_HOME/conda/condarc"
 
 # jupiter
 export JUPYTER_CONFIG_FIR="$XDG_CONFIG_DIR/jupyter"
