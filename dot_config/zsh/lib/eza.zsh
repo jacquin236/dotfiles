@@ -4,8 +4,6 @@ if (($ + commands[eza])); then
     '--time-style=long-iso' '--color-scale=all'
   )
 
-  [[ ! -z $_EZA_PARAMS ]] && eza_params=($_EZA_PARAMS)
-
   alias ls='eza $eza_params'
   alias l='eza --git-ignore $eza_params'
   alias ll='eza --all --header --long $eza_params'
