@@ -28,6 +28,7 @@ typeset -A ZINIT=(
 
 export ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/bin"
 export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
+export ZSH_CACHE_DIR="$__zsh_cache_dir"
 export ZSH_COMPDUMP="${__zsh_cache_dir}/compdump/zcompdump-$SHORTHOST-$VERSION"
 
 if [[ ! -f $ZINIT_HOME/zinit.zsh ]]; then
@@ -51,17 +52,6 @@ zinit light-mode for \
   zdharma-continuum/zinit-annex-patch-dl \
   zdharma-continuum/zinit-annex-rust
 
-## Themes
-setopt promptsubst
-
-zinit wait lucid for \
-    OMZL::git.zsh \
-    OMZL::prompt_info_functions.zsh \
-    OMZP::git-prompt \
-    OMZP::kube-ps1 \
-  atload"unalias grv" \
-    OMZP::git 
-
 ## Plugins
 # Oh-my-zsh library,plugins,completions
 zinit wait lucid light-mode for \
@@ -69,6 +59,7 @@ zinit wait lucid light-mode for \
     OMZL::clipboard.zsh \
     OMZL::git.zsh \
     OMZL::grep.zsh \
+    OMZL::prompt_info_functions.zsh \
     OMZL::spectrum.zsh \
     OMZL::termsupport.zsh \
     OMZL::key-bindings.zsh \
@@ -76,6 +67,8 @@ zinit wait lucid light-mode for \
     OMZP::systemd \
     OMZP::urltools \
     OMZP::kubectl \
+    OMZP::poetry-env \
+    OMZP::poetry \
     wfxr/forgit \
   atinit"zicompinit; zicdreplay" \
     zdharma-continuum/fast-syntax-highlighting \
