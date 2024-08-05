@@ -1,0 +1,4 @@
+set backupdir=$XDG_CACHE_HOME/vim/backup 
+set undodir=$XDG_CACHE_HOME/vim/undo 
+set viminfo='100,n$XDG_CACHE_HOME/vim/viminfo
+set runtimepath=$XDG_CONFIG_HOME/vim
