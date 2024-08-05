@@ -1,4 +1,105 @@
+" Setup directory {{{1 
 set backupdir=$XDG_CACHE_HOME/vim/backup 
 set undodir=$XDG_CACHE_HOME/vim/undo 
 set viminfo='100,n$XDG_CACHE_HOME/vim/viminfo
-set runtimepath=$XDG_CONFIG_HOME/vim
+set runtimepath=$XDG_CONFIG_HOME/vim,$XDG_DATA_HOME/vim
+
+" Plugins {{{1
+" Install vim-plug if not found
+if empty(glob('~/.local/share/vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.local/share/vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junngunn/vim-plug/master/plug.vim
+endif
+
+call plug#begin(~/.local/share/vim/plugged)
+  Plug 'tpope/vim-commentary'
+  Plug 'tpope/vim-endwise'
+  Plug 'tpope/vim-fugitive'
+  Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-eunuch'
+  Plug 'tpope/vim-abolish'
+
+  Plug 'honza/vim-snippets'
+  Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
+  Plug 'itchyny/vim-highlighturl'
+  Plug 'kshenoy/vim-signature'
+
+  Plug 'ryanoasis/vim-devicons'
+  Plug 'preservim/nerdtree'
+  Plug 'mhinz/vim-startify'
+  Plug 'vim-airline/vim-airline'
+  
+  Plug 'catppuccin/vim', { 'as': 'catppuccin' }
+
+call plug#end()
+
+" Add fzf to runtime path
+
+" Options {{{1
+" Indent
+set autoindent
+set expandtab
+set smarttab
+set softtabstop=2
+set shiftwidth=2
+set shiftround
+set backspace=indent,eol,start 
+
+" Backup/Swap/Undo
+set nobackup
+set nowritebackup
+set undofile
+set noswapfile
+set autoread
+set noautowrite
+set noautowriteall
+
+" Navigation
+set cursorline
+set foldmethod=marker
+set foldopen-=hor
+set foldopen+=jump
+set hlsearch
+set incsearch
+set mouse=a 
+set mousemodel=popup
+set scrolloff=10
+set ignorecase
+set smartcase
+set tagcase=match
+
+" Number
+set number 
+set numberwidth=3
+set norelativenumber
+set noruler 
+
+" Time
+set timeout
+set timeoutlen=500
+set ttimeout
+set ttimeoutlen=10
+set lazyredraw
+
+" Display
+set noshowmode
+set laststatus=2
+set showcmd
+set showmatch
+
+" Wrap
+set nowrap 
+
+" EOL
+set listchars=eol:\ 
+
+" Mappings {{{1
+let mapleader = ' '
+
+" Colorscheme {{{1
+set termguicolors
+set background=dark
+colorscheme catppuccin_mocha
+
+" }}}1
+" vim: sw=2 sts=2 tw=0 fdm=marker
