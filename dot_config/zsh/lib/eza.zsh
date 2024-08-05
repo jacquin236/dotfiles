@@ -1,7 +1,4 @@
-if (( $+commands[eza] )); then
-  typeset enable_autocd=0
-  typeset -ag eza_params
-
+if (($ + commands[eza])); then
   eza_params=(
     '--git' '--icons' '--group' '--group-directories-first'
     '--time-style=long-iso' '--color-scale=all'
@@ -17,11 +14,4 @@ if (( $+commands[eza] )); then
   alias lx='eza -lbhHigUmuSa@'
   alias lt='eza --tree $eza_params'
   alias tree='eza --tree $eza_params'
-
-  [[ "$AUTOCD" = <-> ]] && enable_autocd="$AUTOCD"
-  if [[ "$enable_autocd" == "1" ]]; then
-   # Function for cd auto list directories
-    →auto-eza() { command eza $eza_params; }
-    [[ $chpwd_functions[(r)→auto-eza] == →auto-eza ]] || chpwd_functions=( →auto-eza $chpwd_functions )
-  fi
 fi
