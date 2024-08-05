@@ -99,6 +99,10 @@ if [ -d $NVM_DIR ]; then
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 fi
 
+# Vim (place .vimrc in another place than HOME)
+export MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc"
+export VIMINIT="source $MYVIMRC"
+
 # whalebrew
 export WHALEBREW_CONFIG_DIR="$XDG_CONFIG_HOME/whalebrew"
 export WHALEBREW_INSTALL_PATH="$XDG_BIN_HOME/whalebrew"
