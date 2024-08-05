@@ -1,6 +1,3 @@
-builtin emulate -L zsh ${=${options[xtrace]:#off}:+-o xtrace}
-builtin setopt extended_glob warn_create_global typeset_silent
-
 if (( $+commands[eza] )); then
   typeset enable_autocd=0
   typeset -ag eza_params
