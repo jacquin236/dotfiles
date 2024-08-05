@@ -86,11 +86,7 @@ unset lib_file
 # evalcache for faster load 'eval'
 export ZSH_EVALCACHE_DIR=${__zsh_cache_dir}/evalcache
 zinit light mroth/evalcache
-
-_evalcache starship init zsh
-_evalcache pyenv init - --no-rehash zsh
-_evalcache pyenv virtualenv-init -
-_evalcache rbenv init - --no-rehash zsh
+source "$ZDOTDIR/evalcache.zsh"
 
 # nvm
 export NVM_DIR="$XDG_DATA_HOME/nvm"
