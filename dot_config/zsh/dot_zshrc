@@ -41,8 +41,8 @@ fi
 
 source "$ZINIT_HOME/zinit.zsh"
 
-#autoload -Uz _zinit
-#(( ${+_comps} )) && _comps[zinit]=_zinit
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 
 ### Zplugins ###
 ## Annexes (important annexes without Turbo)
@@ -67,6 +67,7 @@ zinit wait lucid light-mode for \
     OMZP::systemd \
     OMZP::urltools \
     OMZP::kubectl \
+    OMZP::kube-ps1 \
     OMZP::poetry-env \
     OMZP::poetry \
     wfxr/forgit \
@@ -103,7 +104,6 @@ zinit ice depth="1"
 zinit light marlonrichert/zsh-autocomplete
 
 zstyle ':autocomplete:*' delay 0.001  # seconds (float)
-zstyle ':autocomplete:*' ignored-input '..##'
 
 autoload -Uz compinit
 compinit
