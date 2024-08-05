@@ -109,7 +109,6 @@ zinit ice depth="1"
 zinit light marlonrichert/zsh-autocomplete
 
 zstyle ':autocomplete:*' delay 0.001  # seconds (float)
-zstyle ':autocomplete:*' min-input 3
 zstyle ':autocomplete:*' ignored-input '..##'
 
 autoload -Uz compinit
