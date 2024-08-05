@@ -1,4 +1,4 @@
-if (($ + commands[eza])); then
+if command -v eza >/dev/null; then
   eza_params=(
     '--git' '--icons' '--group' '--group-directories-first'
     '--time-style=long-iso' '--color-scale=all'
