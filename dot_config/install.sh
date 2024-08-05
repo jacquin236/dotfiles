@@ -74,7 +74,7 @@ setup_homebrew() {
 brew_packages_install() {
   if command_exists brew; then
     if checkyes "Found Homebrew. Would you like to install/upgrade recommended packages?"; then
-      check_brew_packages fzf bat fd tree rg jq yq gh lazygit git-delta
+      check_brew_packages fzf bat fd tree rg jq yq gh lazygit git-delta eza
       if ! command -v "chezmoi" >/dev/null && checkyes "Install chezmoi for dotfiles management?"; then
         check_brew_packages chezmoi
       fi
