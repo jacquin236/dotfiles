@@ -13,11 +13,12 @@ checkout() {
 }
 
 install_pyenv() {
-  export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
   fmtwarn "Checking required dependencies first..."
-  check_apt_packages build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
+  check_apt_packages build-essential libssl-dev zlib1g zlib1g-dev libbz2-dev libreadline-dev \
     libsqlite3-dev curl git libncursesw5-dev xz-utils tk-dev libxml2-dev \
-    libxmlsec1-dev libffi-dev liblzma-dev
+    libxmlsec1-dev libffi-dev liblzma-dev make cmake ccache
+
+  fmtinfo "Please choose your installation method: Homebrew/Git"
 
   if command_exists brew && checkyes "Install pyenv with Homebrew?"; then
     fmtwarn "Trying to install/update pyenv with Homebrew..." &&
@@ -26,10 +27,11 @@ install_pyenv() {
     eval "$(pyenv init -)"
     fmtsuccess "Done installing pyenv."
     if checkyes "Install pyenv plugins?"; then
-      brew install pyenv-virtualenv
+      check_brew_packages pyenv-virtualenv pyenv-ccache
       eval "$(pyenv virtualenv-init -)"
     fi
   else
+    export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
     if checkyes "Install pyenv with git?"; then
       fmtwarn "Trying to install/update pyenv with git..."
 
@@ -41,21 +43,17 @@ install_pyenv() {
       checkout "${GITHUB}pyenv/pyenv-doctor.git" "${PYENV_ROOT}/plugins/pyenv-doctor" "master"
       checkout "${GITHUB}pyenv/pyenv-update.git" "${PYENV_ROOT}/plugins/pyenv-update" "master"
       checkout "${GITHUB}pyenv/pyenv-virtualenv.git" "${PYENV_ROOT}/plugins/pyenv-virtualenv" "master"
+      checkout "${GITHUB}pyenv/pyenv-ccache.git" "${PYENV_ROOT}/plugins/pyenv-ccache" "master"
 
       cd "$PYENV_ROOT" && src/configure && make -C src
-
-      {
-        "${PYENV_ROOT}/bin/pyenv" init || true
-        "${PYENV_ROOT}/bin/pyenv" virtualenv-init || true
-      } >&2
-
     fi
   fi
   fmtsuccess "Installed Pyenv!" || err_exit "Failed to install Pyenv."
 }
 
 install_version() {
-  eval "$(pyenv init -)"
+  eval "$(pyenv init --path)"
+  eval "$(pyenv init - --no-rehash -)"
   pyenv install --list | grep '^ 3.'
   printf "Choose a Python version: " && read -r version
   pyenv install "$version" --verbose
@@ -69,7 +67,8 @@ install_poetry() {
     export POETRY_HOME="$XDG_DATA_HOME/pypoetry"
     export PATH="$POETRY_HOME/bin:$PATH"
     curl -sSL https://install.python-poetry.org | python3 -
-    echo "Check version " && poetry --version
+    echo "${COLOR_PINK}Checking version... "
+    poetry --version
     # if checkyes "Enable Tab Completion for your Shell?"; then
     #   fmtinfo "Add completion for bash..."
     #   poetry completions bash >"${XDG_DATA_HOME:-~/.local/share}"/bash-completion/completions/poetry
@@ -80,18 +79,15 @@ install_poetry() {
     # fi
     fmtsuccess "You have PyPoetry installed!" || err_exit "Installed Poetry failed."
   fi
+  if command_exists poetry && checkyes "Update Poetry?"; then
+    poetry self update
+  fi
 }
 
 main() {
-
-  if ! command_exists pyenv; then
-    if checkyes "Seems like you don't have pyenv installed. Install it now?"; then
-      install_pyenv
-      install_version
-    fi
-  elif ! command_exists poetry; then
-    install_poetry
-  else
+  install_pyenv
+  install_poetry
+  if command_exists pyenv && checkyes "Install a Python version?"; then
     install_version
   fi
 }
