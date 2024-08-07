@@ -23,7 +23,7 @@ typeset -A ZINIT=(
   PLUGINS_DIR     $XDG_DATA_HOME/zinit/plugins
   SNIPPETS_DIR    $XDG_DATA_HOME/zinit/snippets
   COMPLETIONS_DIR $XDG_CACHE_HOME/zsh/completions
-  # COMPINIT_OPTS   -C
+  COMPINIT_OPTS   -C
 )
 
 export ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/bin"
@@ -75,7 +75,11 @@ zinit wait lucid light-mode for \
     zdharma-continuum/fast-syntax-highlighting \
     OMZP::colored-man-pages \
   atload"_zsh_autosuggest_start" \
-    zsh-users/zsh-autosuggestions
+    zsh-users/zsh-autosuggestions \
+  as"completion" \
+    OMZP::rails/_rails \
+    OMZP::docker/completions/_docker \
+    OMZP::golang/_golang 
 
 ### My lib
 for lib_file ($ZDOTDIR/lib/*.zsh); do
