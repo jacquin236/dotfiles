@@ -32,9 +32,6 @@ setup_whalebrew() {
     #     echo 'export WHALEBREW_INSTALL_PATH="$XDG_BIN_HOME/whalebrew"'
     #   } >>"$ZDOTDIR/.zshrc"
     # fi
-    if checkyes "Enable whalebrew completions?" && [ -n $ZSH_VERSION ]; then
-      whalebrew completion zsh >|"$ZSH_CACHE_DIR/completions/_whalebrew"
-    fi
     fmtsuccess "Installed whalebrew successfully!"
   fi
 }

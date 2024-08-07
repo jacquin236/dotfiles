@@ -7,8 +7,25 @@ export XDG_STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
 export XDG_BIN_HOME=${XDG_BIN_HOME:-$HOME/.local/bin}
 export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-$HOME/.xdg}
 export XDG_PROJECTS_DIR=${XDG_PROJECTS_DIR:-$HOME/projects}
+
 # zsh
 export ZDOTDIR=${ZDOTDIR:-$XDG_CONFIG_HOME/zsh}
+export ZSH_COMPDUMP="$XDG_CACHE_DIR/zsh/compdump/zcompdump-$SHORTHOST-$VERSION"
+
+### Zsh dirs ###
+: ${__zsh_config_dir:=${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}}
+: ${__zsh_user_data_dir:=${XDG_DATA_HOME:-$HOME/.local/share}/zsh}
+: ${__zsh_cache_dir:=${XDG_CACHE_HOME:-$HOME/.cache}/zsh}
+
+# Ensure these dirs exist
+() {
+  for zdir in $@
+  do
+    [ -d "${(P)zdir}" ] || mkdir -p -- "${(P)zdir}"
+  done
+} __zsh_{config,user_data,cache}_dir
+
+ZSH_CACHE_DIR="$__zsh_cache_dir"
 
 # WSL Utilities
 if [ "$(uname -r | sed -n 's/.*\( *Microsoft *\).*/\1/ip')" ] || command -v wslview >/dev/null; then
