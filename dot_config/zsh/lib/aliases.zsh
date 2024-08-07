@@ -19,7 +19,9 @@ if command -v fzf >/dev/null; then
 
   # Man pages
   fman() {
-    man -k . | fzf -q "$1" --prompt='man> ' --preview $'echo {} | tr -d \'()\' | awk \'{printf "%s ", $2} {print $1}\' | xargs -r man | col -bx | bat -l man -p --color always' | tr -d '()' | awk '{printf "%s ", $2} {print $1}' | xargs -r man
+    man -k . | fzf -q "$1" --prompt='man> ' --preview $'echo {} | tr -d \'()\' | \
+      awk \'{printf "%s ", $2} {print $1}\' | xargs -r man | col -bx | \
+      bat -l man -p --color always' | tr -d '()' | awk '{printf "%s ", $2} {print $1}' | xargs -r man
   }
 
   # Browsing Kubernetes pods.
@@ -57,6 +59,29 @@ if command -v fzf >/dev/null && command -v rg >/dev/null; then
       --bind 'enter:become(nvim {1} +{2})'
   }
 fi
+
+# Ruby/gem
+if command -v rbenv >/dev/null; then
+  alias rubies="rbenv versions"
+  alias gemsets="rbenv gemset list"
+  
+  function current_ruby() {
+    echo "$(rbenv version-name)"
+  }
+
+  function current_gemset() {
+    echo "$(rbenv gemset active 2>/dev/null)" | tr ' ' '+'
+  }
+
+  function gems() {
+    local rbenv_path=$(rbenv prefix)
+    gem list $@ | sed -E \
+      -e "s/\([0-9a-z, \.]+( .+)?\)/$fg[blue]&$reset_color/g" \
+      -e "s|$(echo $rbenv_path)|$fg[magenta]\$rbenv_path$reset_color|g" \
+      -e "s/$current_ruby@global/$fg[yellow]&$reset_color/g" \
+      -e "s/$current_ruby$current_gemset$/$fg[green]&$reset_color/g"
+  }
+fi 
 
 ## Config files
 alias zdot='cd $ZDOTDIR'
