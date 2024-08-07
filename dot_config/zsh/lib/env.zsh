@@ -101,21 +101,6 @@ export WHALEBREW_INSTALL_PATH="$XDG_BIN_HOME/whalebrew"
 # minikube
 export MINIKUBE_HOME="$XDG_CONFIG_HOME/minikube"
 
-### fzf ###
-# Make with: https://vitormv.github.io/fzf-themes/
-export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-  --color=fg:#a6adc8,fg+:#cdd6f4,bg:#181825,bg+:#181825
-  --color=hl:#89b4fa,hl+:#89dceb,info:#cba6f7,marker:#a6e3a1
-  --color=prompt:#f38ba8,spinner:#cba6f7,pointer:#fab387,header:#f9e2af
-  --color=border:#89b4fa,scrollbar:#cba6f7,preview-scrollbar:#cba6f7,label:#f2cdcd
-  --color=query:#bac2de
-  --border="rounded" --border-label="" --preview-window="border-rounded" --padding="2"
-  --margin="3" --prompt="➽ " --marker="❯ " --pointer="✦ "
-  --separator="─" --scrollbar="❚" --layout="reverse" --info="right"'
-
-export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
-export FZF_CTRL_T_COMMANDS="$FZF_DEFAULT_COMMAND"
-
 
 ### Add programs bin to path ###
 # Add directories to the PATH and prevent to add the same directory multiple times upon shell reload.
