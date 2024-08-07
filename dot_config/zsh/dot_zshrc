@@ -82,6 +82,7 @@ zinit wait lucid light-mode for \
 
 if (( ${+commands[rails]} )); then
   zi snippet OMZP::rails
+  zi snippet OMZP::rake-fast
 fi
 
 ### Custom/Lib
