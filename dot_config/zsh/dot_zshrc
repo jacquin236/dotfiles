@@ -68,10 +68,8 @@ zinit wait lucid for \
 local GH_RAW_URL='https://raw.githubusercontent.com'
 
 if [[ -n $commands[rustup] ]]; then
-  zinit as"completion" for \
-    $GH_RAW_URL/ryutok/rust-zsh-completions/master/src/_cargo \
-    $GH_RAW_URL/ryutok/rust-zsh-completions/master/src/_rustc \
-    $GH_RAW_URL/ryutok/rust-zsh-completions/master/src/_rustup 
+  zinit ice as"completion"
+  zinit snippet OMZP::rust
 fi
 
 if [[ -n $commands[rbenv] ]]; then
@@ -128,10 +126,3 @@ zinit wait lucid light-mode for \
   blockf atpull'zinit creinstall -q .' \
     zsh-users/zsh-completions
 
-zinit ice depth="1"
-zinit load marlonrichert/zsh-autocomplete
-
-zstyle ':autocomplete:menu-search:*' insert-unambiguous yes
-zstyle ':autocomplete:*history*:*' insert-unambiguous yes
-zstyle ':autocomplete:*' delay 0.01
-zstyle ':autocomplete:*' min-input 3
