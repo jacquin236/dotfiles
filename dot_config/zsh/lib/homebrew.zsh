@@ -76,7 +76,3 @@ bcp() {
   fi
 }
 
-### Update Homebrew ###
-function update brew() {
-  brew update && brew upgrade
-}

@@ -40,7 +40,6 @@ if [[ ! -f $ZINIT_HOME/zinit.zsh ]]; then
 fi
 
 source "$ZINIT_HOME/zinit.zsh"
-
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
@@ -70,6 +69,8 @@ zinit wait lucid light-mode for \
     OMZP::kube-ps1 \
     OMZP::poetry-env \
     OMZP::poetry \
+    OMZP::rails \
+    OMZP::rake-fast \
     wfxr/forgit \
   atinit"zicompinit; zicdreplay" \
     zdharma-continuum/fast-syntax-highlighting \
@@ -80,10 +81,6 @@ zinit wait lucid light-mode for \
     OMZP::docker/completions/_docker \
     OMZP::golang/_golang 
 
-if (( ${+commands[rails]} )); then
-  zi snippet OMZP::rails
-  zi snippet OMZP::rake-fast
-fi
 
 ### Custom/Lib
 for lib_file ($ZDOTDIR/lib/*.zsh); do
@@ -116,12 +113,4 @@ zinit light marlonrichert/zsh-autocomplete
 zstyle ':autocomplete:*' delay 0.001  # seconds (float)
 zstyle ':autocomplete:*' min-input 3
 zstyle ':autocomplete:menu-search:*' insert-unambiguous yes
-
-
-# Load all functions
-autoload -Uz compinit
-compinit
-
-zinit cdreplay -q
-
 
