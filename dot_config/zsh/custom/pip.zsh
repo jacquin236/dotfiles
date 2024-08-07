@@ -16,35 +16,6 @@ alias pipir='pip install -r requirements.txt'
 alias pipli="pip freeze | grep -v 'pkg-resources' > requirements.txt; cat requirements.txt"
 
 ### Functions
-# Cache for list of packages
-ZSH_PIP_CACHE_FILE="${XDG_CACHE_HOME:-$HOME/.cache/pip}/zsh-cache"
-ZSH_PIP_INDEXES=(https://pypi.org/simple/)
-piplist=($(cat $ZSH_PIP_CACHE_FILE))
-
-function pipcache packages() {
-  if [[ ! -d ${ZSH_PIP_CACHE_FILE:h} ]]; then
-      mkdir -p ${ZSH_PIP_CACHE_FILE:h}
-  fi
-  if [[ ! -f $ZSH_PIP_CACHE_FILE ]]; then
-      echo -n "(...caching package index...)"
-      tmp_cache=/tmp/zsh_tmp_cache
-      touch $tmp_cache
-      for index in $ZSH_PIP_INDEXES ; do
-          # well... I've already got two problems
-          curl -L $index 2>/dev/null | \
-              sed -n '/<a href/ s/.*>\([^<]\{1,\}\).*/\1/p' \
-               >> $tmp_cache
-      done
-      sort $tmp_cache | uniq | tr '\n' ' ' > $ZSH_PIP_CACHE_FILE
-      rm $tmp_cache
-  fi
-}
-
-function pipcache clear() {
-  rm -f $ZSH_PIP_CACHE_FILE
-  unset piplist
-}
-
 # Upgrade all installed packages
 function pipupall {
   # non-GNU xargs does not support nor need `--no-run-if-empty`
