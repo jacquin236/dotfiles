@@ -87,7 +87,7 @@ function update poetry() {
 
 function update allpy() {
   pip install --upgrade --user pip pipupgrade &&
-    update poetry &&
-    update pyenv &&
+    pyenv update &&
+    poetry self update &&
     python -m pipupgrade --latest --yes
 }
