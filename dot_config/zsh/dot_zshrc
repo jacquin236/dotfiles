@@ -77,10 +77,12 @@ zinit wait lucid light-mode for \
   atload"_zsh_autosuggest_start" \
     zsh-users/zsh-autosuggestions \
   as"completion" \
-    OMZP::rails/_rails \
     OMZP::docker/completions/_docker \
     OMZP::golang/_golang 
 
+if (( ${+commands[rails]} )); then
+  zi snippet OMZP::rails
+fi
 
 ### Custom/Lib
 for lib_file ($ZDOTDIR/lib/*.zsh); do

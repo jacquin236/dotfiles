@@ -67,3 +67,4 @@ function gems() {
     -e "s/$current_ruby@global/$yellow&$reset_color/g" \
     -e "s/$current_ruby$current_gemset$/$green&$reset_color/g"
 }
+
