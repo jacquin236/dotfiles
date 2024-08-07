@@ -44,11 +44,6 @@ function current python() {
   echo "$(pyenv version-name)"
 }
 
-### Update pyenv ###
-function update pyenv() {
-  pyenv update
-}
-
 ## Poetry
 alias po='poetry'
 alias poa='poetry add'
@@ -79,11 +74,6 @@ alias poeu='poetry env use'
 
 alias posplug='poetry self show plugins'
 alias posinst='poetry self install'
-
-### Update poetry ###
-function update poetry() {
-  poetry self update
-}
 
 function update allpy() {
   pip install --upgrade --user pip pipupgrade &&
