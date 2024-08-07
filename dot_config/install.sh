@@ -38,7 +38,7 @@ base_dir() {
 
 base_deps() {
   fmtinfo "Update machine and install prior dependencies..."
-  check_apt_packages git ca-certificates build-essential gcc make cmake wamerican moreutils
+  check_apt_packages git ca-certificates build-essential gcc make cmake wamerican moreutils atool
   fmtsuccess "Done!"
 }
 
