@@ -62,7 +62,6 @@ zinit wait lucid for \
     OMZL::prompt_info_functions.zsh \
     OMZP::systemd \
     OMZP::urltools \
-    OMZP::gitfast \
     OMZP::kube-ps1
 
 ## Completions
@@ -131,8 +130,6 @@ zinit wait lucid light-mode for \
 
 zinit ice depth="1"
 zinit light marlonrichert/zsh-autocomplete
-
-zinit cdreplay -q
 
 zstyle '*:compinit' arguments -D -i -u -C -w
 zstyle ':autocomplete:menu-search:*' insert-unambiguous yes
