@@ -131,11 +131,6 @@ zinit wait lucid light-mode for \
 zinit ice depth="1"
 zinit load marlonrichert/zsh-autocomplete
 
-autoload -Uz compinit
-compinit
-
-zi cdreplay -q
-
 zstyle ':autocomplete:menu-search:*' insert-unambiguous yes
 zstyle ':autocomplete:*history*:*' insert-unambiguous yes
 zstyle ':autocomplete:*' delay 0.01
