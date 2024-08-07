@@ -112,6 +112,8 @@ export HELM_CACHE_HOME="$XDG_CACHE_HOME/helm"
 export HELM_CONFIG_HOME="$XDG_CONFIG_HOME/helm"
 export HELM_DATA_HOME="$XDG_DATA_HOME/helm"
 
+# kubectl
+export KUBECONFIG="$XDG_CONFIG_HOME/kube"
 
 ### Add programs bin to path ###
 # Add directories to the PATH and prevent to add the same directory multiple times upon shell reload.
