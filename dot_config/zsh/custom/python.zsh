@@ -45,7 +45,6 @@ function current python() {
 }
 
 ## Poetry
-alias po='poetry'
 alias poa='poetry add'
 alias pob='poetry build'
 alias poc='poetry check'
@@ -75,9 +74,3 @@ alias poeu='poetry env use'
 alias posplug='poetry self show plugins'
 alias posinst='poetry self install'
 
-function update allpy() {
-  pip install --upgrade --user pip pipupgrade &&
-    pyenv update &&
-    poetry self update &&
-    python -m pipupgrade --latest --yes
-}

@@ -7,12 +7,12 @@ else
   alias pip="noglob pip"
 fi
 
-alias pipi='pip install'
-alias pipu='pip uninstall'
+alias pipin='pip install'
+alias pipun='pip uninstall'
 
 # requirements.txt
-alias pipre='pip freeze > requirements.txt'
-alias pipir='pip install -r requirements.txt'
+alias pipre="pip freeze > requirements.txt"
+alias pipir="pip install -r requirements.txt"
 alias pipli="pip freeze | grep -v 'pkg-resources' > requirements.txt; cat requirements.txt"
 
 ### Functions
@@ -32,21 +32,11 @@ function pipunall {
   pip list --format freeze | cut -d= -f1 | ${=xargs} pip uninstall
 }
 
-### Update pip ###
-function update pip() {
-  pip install --upgrade pip
-}
-
-
 ### PIPENV ###
 if (( ! ${+commands[pipenv]} )); then
   return
 fi
 
-# Pipenv settings
-export PIPENV_VENV_IN_PROJECT=1
-export PIPENV_NO_INHERIT=1
-export PIPENV_IGNORE_VIRTUALENVS=1
 
 # Pipenv aliases
 alias pcheck='pipenv check'
