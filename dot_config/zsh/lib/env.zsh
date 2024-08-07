@@ -23,6 +23,12 @@ if [[ -z "$LESSOPEN" ]] && (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
 fi
 
+if command -v nvim >/dev/null; then
+  export SUDO_EDITOR=nvim
+else
+  export SUDO_EDITOR=vim
+fi
+
 # Manpages
 if [ -d /usr/local/man ]; then
   export MANPATH="/usr/local/man:$MANPATH"

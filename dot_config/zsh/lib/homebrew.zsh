@@ -1,4 +1,8 @@
 # Completions
+if [[ -z "$HOMEBREW_PREFIX" ]]; then
+  export HOMEBREW_PREFIX="$(brew --prefix)"
+fi
+
 if [[ -d "$HOMEBREW_PREFIX/share/zsh/site-functions" ]]; then
   fpath+=("$HOMEBREW_PREFIX/share/zsh/site-functions")
 fi
@@ -17,17 +21,20 @@ function brews() {
   echo "\n${blue}==>${off} ${bold}Casks${off}\n${casks}"
 }
 
+alias brewa='brew autoremove'
 alias brewc='brew cleanup'
 alias brewi='brew install'
-alias brewL='brew leaves'
 alias brewl='brew list'
 alias brewo='brew outdated'
+alias brewp='brew pin'
 alias brews='brew search'
 alias brewu='brew upgrade'
-alias brewx='brew uninstall'
+alias brewun='brew uninstall'
 alias brewup="brew update && brew upgrade && brew cleanup"
 alias brewinfo="brew leaves | xargs brew desc --eval-all"
 
+
+# Aliases for Homebrew use fzf
 if (( ! ${+commands[fzf]} )); then
   return
 fi
@@ -69,3 +76,7 @@ bcp() {
   fi
 }
 
+### Update Homebrew ###
+function update brew() {
+  brew update && brew upgrade
+}

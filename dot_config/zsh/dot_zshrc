@@ -81,11 +81,18 @@ zinit wait lucid light-mode for \
     OMZP::docker/completions/_docker \
     OMZP::golang/_golang 
 
-### My lib
+
+### Custom/Lib
 for lib_file ($ZDOTDIR/lib/*.zsh); do
   source $lib_file
 done
 unset lib_file
+
+for cus_file ($ZDOTDIR/custom/*.zsh); do
+  source $cus_file
+done
+unset cus_file
+
 
 # evalcache for faster load 'eval'
 export ZSH_EVALCACHE_DIR=${__zsh_cache_dir}/evalcache
@@ -104,9 +111,14 @@ zinit ice depth="1"
 zinit light marlonrichert/zsh-autocomplete
 
 zstyle ':autocomplete:*' delay 0.001  # seconds (float)
+zstyle ':autocomplete:*' min-input 3
+zstyle ':autocomplete:menu-search:*' insert-unambiguous yes
 
+
+# Load all functions
 autoload -Uz compinit
 compinit
+
 zinit cdreplay -q
 
 
