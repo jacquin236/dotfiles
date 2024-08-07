@@ -1,0 +1,135 @@
+" Plugins {{{1
+" Install vim-plug if not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif 
+
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+  \| PlugInstall --sync | source $MYVIMRC
+\| endif
+
+call plug#begin('~/.vim/bundle')
+
+Plug 'junegunn/vim-plug'
+Plug 'airblade/vim-rooter'
+
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-abolish'
+Plug 'itchyny/vim-highlighturl'
+
+Plug 'honza/vim-snippets'
+Plug 'Exafunction/codeium.vim', { 'branch': 'main' }
+Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
+Plug 'chrisbra/csv.vim'
+
+Plug 'ryanoasis/vim-devicons'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'mhinz/vim-signify'
+Plug 'mhinz/vim-startify'
+
+Plug 'alker0/chezmoi.vim'
+Plug 'Lilja/vim-chezmoi'
+
+call plug#end()
+
+" General settings {{{1
+set nocompatible
+set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf 
+
+" Codeium 
+let g:codeium_disable_bindings = 1 
+
+imap <script><silent><nowait><expr> <C-g> codeium#Accept()
+imap <C-;>   <Cmd>call codeium#CycleCompletions(1)<CR>
+imap <C-,>   <Cmd>call codeium#CycleCompletions(-1)<CR>
+imap <C-x>   <Cmd>call codeium#Clear()<CR>
+
+" Chezmoi
+let g:chezmoi#use_tmp_buffer = 1 
+let g:chezmoi = "enabled"
+
+" Statusline 
+set laststatus=2 
+set noshowmode
+
+let g:airline_experimental=1
+let g:airline_theme='base16_spacemacs'
+let g:airline_powerline_fonts=1
+let g:airline_highlighting_cache = 1
+let g:airline_stl_path_style = 'short'
+let g:airline#extensions#codeium#enabled = 0
+
+" Colorschema {{{2
+set termguicolors
+set rtp+=~/.local/share/nvim/lazy/tokyonight.nvim/extras/vim
+colorscheme tokyonight-moon
+
+" Number }}}2
+set number
+set norelativenumber
+set numberwidth=1
+set noruler
+
+" Mouse/Navigation }}}2 
+set mouse=a 
+set mousemodel=popup 
+set lazyredraw
+set scrolloff=10
+set sidescrolloff=9 
+"set cursorline
+set foldmethod=marker
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+set tagcase=match 
+
+" Files }}}2 
+set nobackup
+set nowritebackup
+set noswapfile
+set undofile
+
+set backupdir=~/.cache/vim/backup 
+set undodir=~/.cache/vim/undo 
+set viminfo='100,n~/.cache/vim/viminfo
+
+set noautowrite
+set noautowriteall
+
+set nowrap 
+
+" Indent }}}2 
+set autoindent
+set smartindent
+
+set expandtab
+set smarttab
+set tabstop=2 
+set softtabstop=2 
+set shiftwidth=2 
+set shiftround
+
+" set colorcolumn=100,120
+
+" Window }}}2  
+set pumheight=10 
+set showcmd
+set splitbelow
+set splitright
+set background=dark
+set title 
+set autoread
+
+" }}}2
+
+" }}}1
+
+" vim: sw=2 sts=2 tw=0 fdm=marker
