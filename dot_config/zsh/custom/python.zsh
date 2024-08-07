@@ -44,7 +44,7 @@ function current python() {
   echo "$(pyenv version-name)"
 }
 
-## Poetry
+alias po=poetry
 alias poa='poetry add'
 alias pob='poetry build'
 alias poc='poetry check'

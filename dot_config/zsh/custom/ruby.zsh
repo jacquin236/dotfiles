@@ -23,11 +23,9 @@ alias gemp="gem push *.gem"
 alias gemin='gem install'
 alias gemun='gem uninstall'
 
-alias gemsu='sudo gem'
+alias gemup='gem update'
 
-function update gem() {
-  gem update
-}
+alias gemsu='sudo gem'
 
 ## RBENV
 if (( ! ${+commands[rbenv]} )); then
