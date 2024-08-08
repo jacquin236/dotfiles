@@ -39,6 +39,9 @@ base_dir() {
 base_deps() {
   fmtinfo "Update machine and install prior dependencies..."
   check_apt_packages git ca-certificates build-essential gcc make cmake wamerican moreutils atool
+  if checkyes "Add more tools supported for GIT?"; then
+    check_apt_packages git-extras git-quick-stats git-svn
+  fi
   fmtsuccess "Done!"
 }
 
@@ -52,6 +55,41 @@ is_wsl() {
       sudo apt update
       sudo apt install -y wslu
       fmtsuccess "Installed wslu."
+    fi
+  fi
+}
+
+setup_svn() {
+  if ! command -v svn >/dev/null && checkyes "Setup Subversion?"; then
+    check_apt_packages subversion subversion-tools libapache2-svn
+    sudo a2enmod dav_svn
+    sudo mkdir -p /var/svn
+    sudo cat /etc/apache2/mods-available/dav_svn.conf << EOF
+<Location /svn>
+  DAV svn
+  SVNParentPath /var/svn
+</Location>
+EOF
+    sudo service apache2 restart
+    fmtsuccess "Installed SUBVERSION successfully."
+    if checkyes "Create an example first repository?"; then
+      cd /var/svn && sudo svnadmin create firstrepo
+      mkdir $HOME/mainrepo && cd $HOME/mainrepo
+      mkdir trunk tags branches
+      sudo svn import $HOME/mainrepo file:///var/svn/firstrepo -m 'Adding Initial Directories'
+      sudo cat /etc/apache2/mods-available/dav_svn.conf << EOF
+<Location /svn/firstrepo >
+  AuthType Basic
+  AuthName "Authorized Access Only"
+  AuthUserFile /etc/apache2/dav_svn.passwd
+  Require valid-user admin
+</Location>
+EOF
+      sudo htpasswd /etc/apache2/dav_svn.passwd admin
+      sudo service apache2 restart
+      fmtsuccess "You have successfully created svn repository for your first project."
+      fmtinfo "To checkout your project to your working directory, for example:"
+      echo "svn co http://127.0.0.1/svn/firstrepo ~/firstrepo"
     fi
   fi
 }
