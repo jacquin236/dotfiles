@@ -1,3 +1,7 @@
+if [ -d /home/linuxbrew/.linuxbrew/bin ]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
 # Completions
 if [[ -z "$HOMEBREW_PREFIX" ]]; then
   export HOMEBREW_PREFIX="$(brew --prefix)"

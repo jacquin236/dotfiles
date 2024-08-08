@@ -33,11 +33,6 @@ function pipunall {
 }
 
 ### PIPENV ###
-if (( ! ${+commands[pipenv]} )); then
-  return
-fi
-
-eval "$(_PIPENV_COMPLETE=zsh_source pipenv)"
 
 # Pipenv aliases
 alias pcheck='pipenv check'

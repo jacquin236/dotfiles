@@ -55,8 +55,3 @@ function unbak() {
   done
 }
 
-# Kubectl
-function k () {
-  kubectl --context="$CONTEXT" -n "$NAMESPACE" "$@"
-}
-

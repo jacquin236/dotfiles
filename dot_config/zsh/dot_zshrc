@@ -1,128 +1,43 @@
-### Homebrew ###
-if [ -d /home/linuxbrew/.linuxbrew/bin ]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-fi
+### Zsh dirs ###
+: ${__zsh_config_dir:=${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}}
+: ${__zsh_user_data_dir:=${XDG_DATA_HOME:-$HOME/.local/share}/zsh}
+: ${__zsh_cache_dir:=${XDG_CACHE_HOME:-$HOME/.cache}/zsh}
 
-### Custom/Lib
-for lib_file ($ZDOTDIR/lib/*.zsh); do
-  source $lib_file
+# Ensure these dirs exist
+() {
+  for zdir in $@
+  do
+    [ -d "${(P)zdir}" ] || mkdir -p -- "${(P)zdir}"
+  done
+} __zsh_{config,user_data,cache}_dir
+
+export ZSH_CACHE_DIR="$__zsh_cache_dir"
+
+### Load functions and completions ###
+autoload -Uz compinit
+
+# zcompdump
+_comp_files=(${ZSH_CACHE_DIR}/compdump/zcompdump(Nm-20))
+if (( $#_comp_files )); then
+  compinit -i -C
+else
+  compinit -i
+fi
+unset _comp_files
+
+# custom directory
+for _custom_files ($ZDOTDIR/custom/*.zsh)
+do
+  source $_custom_files
 done
-unset lib_file
+unset _custom_files
 
-for cus_file ($ZDOTDIR/custom/*.zsh); do
-  source $cus_file
+# lib directory
+for _lib_files ($ZDOTDIR/lib/*.zsh)
+do
+  source $_lib_files
 done
-unset cus_file
+unset _lib_files
 
-
-### ZINIT ##
-typeset -gAH ZINIT;
-ZINIT[HOME_DIR]="$XDG_DATA_HOME/zsh/zinit"
-ZINIT[BIN_DIR]="$XDG_DATA_HOME/zsh/zinit/bin"
-ZINIT[COMPLETIONS_DIR]="$XDG_DATA_HOME/zsh/zinit/completions"
-ZINIT[SNIPPETS_DIR]="$XDG_DATA_HOME/zsh/zinit/snippets"
-ZINIT[PLUGINS_DIR]="$XDG_DATA_HOME/zsh/zinit/plugins"
-
-if [[ ! -e "$ZINIT[BIN_DIR]" ]]; then
-    print -P "%F{33}▓▒░ %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
-    command mkdir -pv $ZINIT[HOME_DIR] && command chmod g-rwX $ZINIT[HOME_DIR]
-    command git clone https://github.com/zdharma-continuum/zinit $ZINIT[BIN_DIR] && \
-        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-        print -P "%F{160}▓▒░ The clone has failed.%f%b"
-fi
-
-source $ZINIT[BIN_DIR]/zinit.zsh
-autoload -Uz _zinit
-if [[ "${+_comps}" == 1 ]]
-then
-  _comps[zinit]=_zinit
-fi
-
-
-## Plugins
-# evalcache for faster load 'eval'
-export ZSH_EVALCACHE_DIR=${__zsh_cache_dir}/evalcache
-zinit light mroth/evalcache
-source "$ZDOTDIR/evalcache.zsh"
-
-# nvm
-export NVM_DIR="$XDG_DATA_HOME/nvm"
-export NVM_LAZY_LOAD=true
-export NVM_LAZY_LOAD_EXTRA_COMMANDS=('vim', 'nvim')
-export NVM_AUTO_USE=true
-zinit light lukechilds/zsh-nvm
-
-# Oh-my-zsh library,plugins,completions
-zinit wait lucid for \
-    OMZL::clipboard.zsh \
-    OMZL::functions.zsh \
-    OMZL::git.zsh \
-    OMZL::grep.zsh \
-    OMZL::key-bindings.zsh \
-    OMZL::prompt_info_functions.zsh \
-    OMZP::systemd \
-    OMZP::urltools \
-    OMZP::kube-ps1
-
-## Completions
-local GH_RAW_URL='https://raw.githubusercontent.com'
-
-if [[ -n $commands[rustup] ]]; then
-  zinit ice as"completion"
-  zinit snippet OMZP::rust
-fi
-
-if [[ -n $commands[rbenv] ]]; then
-  zinit ice as"completion"
-  zinit snippet $GH_RAW_URL/rbenv/rbenv/master/completions/_rbenv 
-fi
-
-if [[ -n $commands[go] ]]; then
-  zinit ice as"completion"
-  zinit snippet OMZP::golang/_golang
-fi
-
-if [[ -n $commands[gem] ]]; then
-  zinit ice as"completion"
-  zinit snippet OMZP::gem/completions/_gem
-fi
-
-if [[ -n $commands[pip] ]]; then
-  zinit ice as"completion"
-  zinit snippet OMZP::pip/_pip
-fi
-
-if [[ -n $commands[docker] ]]; then
-  zinit ice as"completion"
-  zinit snippet OMZP::docker/completions/_docker
-fi
-
-if [[ -n $commands[npm] ]]; then
-  zinit light lukechilds/zsh-better-npm-completion
-fi
-
-# Kubectl completion
-if command -v kubectl >/dev/null; then
-  source <(kubectl completion zsh)
-fi
-
-if command -v minikube >/dev/null; then
-  source <(minikube completion zsh)
-fi
-
-## Plugins
-# Semigraphical interface to Zinit
-zinit wait'[[ -n ${ZLAST_COMMANDS[(r)cras*]} ]]' light-mode for \
-    zdharma-continuum/zui \
-    zdharma-continuum/zinit-crasis
-
-zinit wait lucid light-mode for \
-    hlissner/zsh-autopair \
-    wfxr/forgit \
-  atinit"zicompinit; zicdreplay" \
-    zdharma-continuum/fast-syntax-highlighting \
-  atload"_zsh_autosuggest_start" \
-    zsh-users/zsh-autosuggestions \
-  blockf atpull'zinit creinstall -q .' \
-    zsh-users/zsh-completions
-
+###### PLUGINS ######
+source $ZDOTDIR/zplugin.zsh

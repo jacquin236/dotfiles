@@ -2,15 +2,6 @@
 # - https://zsh.sourceforge.io/Doc/Release/Options.html#History
 # - https://github.com/ohmyzsh/ohmyzsh/blob/master/lib/history.zsh
 
-autoload -Uz add-zsh-hook
-add-zsh-hook zshaddhistory max_history_len
-function max_history_len() {
-    if (($#1 > 240)) {
-        return 2
-    }
-    return 0
-}
-
 ## History file configuration
 [ -z "$HISTFILE" ] && HISTFILE="${__zsh_user_data_dir}/zsh_history"
 [ -d "${HISTFILE:h}" ] || mkdir -p "${HISTFILE:h}"
@@ -18,16 +9,17 @@ function max_history_len() {
 [ "$SAVEHIST" -lt 10000 ] && SAVEHIST=10000
 
 ## History command configuration
-setopt extended_history       # record timestamp of command in HISTFILE
-setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
-setopt hist_find_no_dups      # do not display a previously found event
-setopt hist_ignore_dups       # ignore duplicated commands history list
-setopt hist_ignore_space      # ignore commands that start with space
-setopt hist_reduce_blanks     # Remove extra blanks from commands added to the history list
-setopt hist_save_no_dups      # do not write a duplicate event to the history file
-setopt hist_verify            # show command with history expansion to user before running it
-setopt share_history          # share command history data
-setopt inc_append_history     # write to the history file immediately, not 'till when the shell exits
+setopt bang_hist                # Treat The '!' Character Specially During Expansion.
+setopt inc_append_history       # Write To The History File Immediately, Not When The Shell Exits.
+setopt share_history            # Share History Between All Sessions.
+setopt hist_expire_dups_first   # Expire A Duplicate Event First When Trimming History.
+setopt hist_ignore_dups         # Do Not Record An Event That Was Just Recorded Again.
+setopt hist_ignore_all_dups     # Delete An Old Recorded Event If A New Event Is A Duplicate.
+setopt hist_find_no_dups        # Do Not Display A Previously Found Event.
+setopt hist_ignore_space        # Do Not Record An Event Starting With A Space.
+setopt hist_save_no_dups        # Do Not Write A Duplicate Event To The History File.
+setopt hist_verify              # Do Not Execute Immediately Upon History Expansion.
+setopt extended_history         # Show Timestamp In History.
 
 ## History alias
 alias hist='fc -li'
