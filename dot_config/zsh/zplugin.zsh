@@ -38,8 +38,8 @@ zinit wait lucid light-mode for \
     OMZL::key-bindings.zsh \
     OMZL::prompt_info_functions.zsh \
     OMZP::git \
-    OMZP::git-fast \
-    hlissner/zsh-autopairs \
+    OMZP::gitfast \
+    hlissner/zsh-autopair \
     wfxr/forgit \
   atinit"zicompinit; zicdreplay" \
     zdharma-continuum/fast-syntax-highlighting \
@@ -73,7 +73,7 @@ if (( ${+commands[kubectl]} )); then
   fi
   command kubectl completion zsh 2> /dev/null >| "$ZINIT[COMPLETIONS_DIR]/_kubectl" &|
   
-  zinit light OMZP::kube-ps1
+  zinit snippet OMZP::kube-ps1
 else
   return
 fi
