@@ -38,7 +38,6 @@ zinit wait lucid light-mode for \
     OMZL::key-bindings.zsh \
     OMZL::prompt_info_functions.zsh \
     OMZP::git \
-    OMZP::gitfast \
     hlissner/zsh-autopair \
     wfxr/forgit \
   atinit"zicompinit; zicdreplay" \
@@ -51,6 +50,9 @@ zinit wait lucid light-mode for \
 export ZSH_EVALCACHE_DIR=$ZSH_CACHE_DIR/evalcache
 zinit light mroth/evalcache
 source "$ZDOTDIR/evalcache.zsh"
+
+zinit ice svn
+zinit snippet OMZP::gitfast
 
 # Docker
 if (( ${+commands[docker]} )); then
