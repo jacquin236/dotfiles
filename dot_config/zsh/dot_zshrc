@@ -17,7 +17,7 @@ export ZSH_CACHE_DIR="$__zsh_cache_dir"
 autoload -Uz compinit
 
 # zcompdump
-_comp_files=(${ZSH_CACHE_DIR}/compdump/zcompdump(Nm-20))
+_comp_files=(${ZDOTDIR:-$XDG_CONFIG_HOME/zsh}/.zcompdump(Nm-20))
 if (( $#_comp_files )); then
   compinit -i -C
 else
