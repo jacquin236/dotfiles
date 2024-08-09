@@ -49,6 +49,10 @@ if ! command -v "nvm" >/dev/null || checkyes "Install Node Version Manager (nvm)
       export PATH="$(npm config get prefix)/bin:$PNPM_HOME:$PATH"
       npm i -g pnpm
       pnpm i -g bun tree-sitter-cli '@11ty/eleventy'
+      if checkyes "Install additional GIT tools?"; then
+        npm i -g git-open
+        npm i -g git-recent
+      fi
     fi
     fmtsuccess "Installed nvm, node, npm, and pnpm. You are all set!"
   else
