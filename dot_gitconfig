@@ -1,0 +1,18 @@
+[credential]
+	helper = /mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe
+[user]
+	email = jq.nhi2306@gmail.com
+  name = Jacquin Moon
+[core]
+  pager = delta
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+  navigate = true    # use n and N to move between diff sections
+    # delta detects terminal colors automatically; set one of these to disable auto-detection
+  dark = true
+    # light = true
+[merge]
+  conflictstyle = diff3
+[diff]
+  colorMoved = default
