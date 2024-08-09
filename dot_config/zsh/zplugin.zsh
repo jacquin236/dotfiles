@@ -40,6 +40,8 @@ zinit wait lucid light-mode for \
     OMZP::git \
     OMZP::svn-fast-info \
     OMZP::systemd \
+    OMZP::urltools \
+    OMZP::extract \
     hlissner/zsh-autopair \
     wfxr/forgit \
   as"completion" \
