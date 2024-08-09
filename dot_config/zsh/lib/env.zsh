@@ -142,6 +142,11 @@ if [ -d "$POETRY_HOME/bin" ]; then add_to_path "$POETRY_HOME/bin"; fi
 # pnpm, nvm
 if [ -d "$PNPM_HOME" ]; then add_to_path "$PNPM_HOME"; fi
 if command -v npm >/dev/null; then add_to_path "$(npm config get prefix)/bin"; fi
+if command -v yarn >/dev/null; then
+  [ -d "$XDG_DATA_HOME/yarn/bin" ] || mkdir -p "$XDG_DATA_HOME/yarn/bin"
+  # Set base location for yarn: yarn config set prefix ~/.local/share/yarn
+  add_to_path "$(yarn global bin)"
+fi
 
 # go
 if [ -d "$GOROOT/bin" ]; then add_to_path "$GOROOT/bin"; fi
