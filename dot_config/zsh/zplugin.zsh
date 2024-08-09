@@ -38,6 +38,8 @@ zinit wait lucid light-mode for \
     OMZL::key-bindings.zsh \
     OMZL::prompt_info_functions.zsh \
     OMZP::git \
+    OMZP::svn-fast-info \
+    OMZP::systemd \
     hlissner/zsh-autopair \
     wfxr/forgit \
   as"completion" \
@@ -60,9 +62,8 @@ if (( ${+commands[docker]} )); then
     autoload -Uz _docker
     _comps[docker]=_docker
   fi
-  command docker completion zsh | tee "$ZINIT[COMPLETIONS_DIR]/_docker" > /dev/null &|
-else
-  return
+  zinit ice as"completion"
+  zinit snippet OMZP::docker/completions/_docker
 fi
 
 # Kubectl
@@ -72,11 +73,7 @@ if (( ${+commands[kubectl]} )); then
     autoload -Uz _kubectl
     _comps[kubectl]=_kubectl
   fi
-  command kubectl completion zsh 2> /dev/null >| "$ZINIT[COMPLETIONS_DIR]/_kubectl" &|
-  
-  zinit snippet OMZP::kube-ps1
-else
-  return
+  kubectl completion zsh 2> /dev/null >| "$ZINIT[COMPLETIONS_DIR]/_kubectl" &|
 fi
 
 # Minikube
@@ -86,9 +83,7 @@ if (( ${+commands[minikube]} )); then
     autoload -Uz _minikube
     _comps[minikube]=_minikube
   fi
-  command minikube completion zsh >| "$ZINIT[COMPLETIONS_DIR]/_minikube" &|
-else
-  return
+  minikube completion zsh >| "$ZINIT[COMPLETIONS_DIR]/_minikube" &|
 fi
 
 # Rust
@@ -104,24 +99,31 @@ if (( ${+commands[rustup]} && ${+commands[cargo]} )); then
     _comps[rustup]=_rustup
   fi
 
-  command rustup completions zsh >| "$ZINIT[COMPLETIONS_DIR]/_rustup" &|
-  command cat >| "$ZINIT[COMPLETIONS_DIR]/_cargo" <<'EOF'
+  rustup completions zsh >| "$ZINIT[COMPLETIONS_DIR]/_rustup" &|
+  cat >| "$ZINIT[COMPLETIONS_DIR]/_cargo" <<'EOF'
 #compdef cargo
 source "$(rustc +${${(z)$(rustup default)}[1]} --print sysroot)"/share/zsh/site-functions/_cargo
 EOF
 
   zinit ice as"completion"
   zinit snippet OMZP::rust/_rustc
-else
-  return
 fi
 
 # Rbenv
 if (( ${+commands[rbenv]} )); then
   zinit ice as"completion"
   zinit snippet https://raw.githubusercontent.com/rbenv/rbenv/master/completions/_rbenv 
-else
-  return
+fi
+if (( ${+commands[rails]} )); then
+  zinit ice as"completion"
+  zinit snippet OMZP::rails/_rails
+fi
+if (( ${+commands[gem]} )); then
+  zinit ice as"completion"
+  zinit snippet OMZP::gem/completions/_gem
+fi
+if (( ${+commands[rake]} )); then
+  zinit snippet OMZP::rake-fast
 fi
 
 # Golang
@@ -138,16 +140,12 @@ if (( ${+commands[go]} )); then
     compctl -g "*.go" ${p}g
   done
   unset p
-else
-  return
 fi
 
 # Pip
 if (( ${+commands[pip]} )); then
   zinit ice as"completion"
   zinit snippet OMZP::pip/_pip
-else
-  return
 fi
 
 if (( ${+commands[pipenv]} )); then
@@ -158,8 +156,6 @@ if (( ${+commands[pipenv]} )); then
   fi
 
   _PIPENV_COMPLETE=zsh_source pipenv >| "$ZINIT[COMPLETIONS_DIR]/_pipenv" &|
-else
-  return
 fi
 
 # Nvm. npm
@@ -170,8 +166,15 @@ export NVM_AUTO_USE=true
 zinit light lukechilds/zsh-nvm
 
 if (( ${+commands[npm]} )); then
-  zinit ice lucid wait'[[ -n ${ZLAST_COMMANDS[npm]} ]]'
   zinit light lukechilds/zsh-better-npm-completion
 fi
+if (( ${+commands[yarn]} )); then
+  zinit ice atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone"
+  zinit light g-plane/zsh-yarn-autocompletions
+fi
+if (( ${+commands[pnpm]} )); then
+  zinit ice atload"zpcdreplay" atclone"./zplug.zsh" atpull"%atclone"
+  zinit light g-plane/pnpm-shell-completion
+fi
 
-zinit cdreplay -q 
+zinit cdreplay -q
