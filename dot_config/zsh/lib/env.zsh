@@ -140,7 +140,7 @@ if [ -d "$PYENV_ROOT/versions/3.12.0/bin" ]; then add_to_path "$PYENV_ROOT/versi
 if [ -d "$POETRY_HOME/bin" ]; then add_to_path "$POETRY_HOME/bin"; fi
 
 # pnpm, nvm
-if [ -d "$PNPM_HOME/bin" ]; then add_to_path "$PNPM_HOME/bin"; fi
+if [ -d "$PNPM_HOME" ]; then add_to_path "$PNPM_HOME"; fi
 if command -v npm >/dev/null; then add_to_path "$(npm config get prefix)/bin"; fi
 
 # go
