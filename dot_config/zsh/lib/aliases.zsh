@@ -13,6 +13,7 @@ alias zshrc='chezmoi edit $ZDOTDIR/.zshrc'
 alias zshenv='chezmoi edit $ZDOTDIR/.zshenv'
 alias zaliases='chezmoi edit $ZDOTDIR/lib/aliases.zsh'
 alias zenv='chezmoi edit $ZDOTDIR/lib/env.zsh'
+alias zplug='chezmoi edit $ZDOTDIR/zplugin.zsh'
 
 alias bashrc='chezmoi edit ~/.bashrc'
 alias bashprof='chezmoi edit ~/.profile'
