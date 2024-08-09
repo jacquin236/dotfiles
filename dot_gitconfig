@@ -10,6 +10,7 @@
 [interactive]
   diffFilter = delta --color-only
 [delta]
+  true-color = always
   navigate = true    # use n and N to move between diff sections
   dark = true
   side-by-side = true
